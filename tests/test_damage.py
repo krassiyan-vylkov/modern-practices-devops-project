@@ -1,7 +1,53 @@
+import pytest
 from app.damage import calculate_damage
 
-def test_basic_damage():
-    assert calculate_damage(100, 50, 1.0) == 50
 
-def test_zero_damage():
-    assert calculate_damage(50, 100, 1.0) == 0
+def test_physical_damage_normal():
+    dmg = calculate_damage(
+        attack=1000,
+        damage_type="physical",
+        defense=600,
+        resistance=0
+    )
+    assert dmg == 400
+
+
+def test_physical_damage_minimum():
+    dmg = calculate_damage(
+        attack=100,
+        damage_type="physical",
+        defense=200,
+        resistance=0
+    )
+    # 5% minimum rule
+    assert dmg == 5
+
+
+def test_arts_damage_normal():
+    dmg = calculate_damage(
+        attack=1000,
+        damage_type="arts",
+        defense=0,
+        resistance=50
+    )
+    assert dmg == 500
+
+
+def test_arts_damage_zero_resistance():
+    dmg = calculate_damage(
+        attack=800,
+        damage_type="arts",
+        defense=0,
+        resistance=0
+    )
+    assert dmg == 800
+
+
+def test_invalid_damage_type():
+    with pytest.raises(ValueError):
+        calculate_damage(
+            attack=100,
+            damage_type="true",
+            defense=0,
+            resistance=0
+        )

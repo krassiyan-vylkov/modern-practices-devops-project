@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Arknights Damage Calculator</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h1>Arknights Damage Calculator</h1>
+
+<div class="box">
+    <select id="operator">
+        {% for op in operators %}
+        <option value="{{ op.id }}">{{ op.name }}</option>
+        {% endfor %}
+    </select>
+
+    <select id="boss">
+        {% for boss in bosses %}
+        <option value="{{ boss.id }}">{{ boss.name }}</option>
+        {% endfor %}
+    </select>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <h2 id="result"></h2>
+</div>
+
+<script>
+async function calculate() {
+    const res = await fetch("/calculate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            operator_id: document.getElementById("operator").value,
+            boss_id: document.getElementById("boss").value
+        })
+    });
+
+    const data = await res.json();
+    document.getElementById("result").innerText =
+        `Damage: ${data.damage} (${data.damage_type})`;
+}
+</script>
+
+</body>
+</html>
