@@ -9,7 +9,11 @@ def calculate_damage(
 
     Arts:
         attack * (1 - resistance / 100)
+
+    True:
+        attack
     """
+
     damage_type = damage_type.lower()
 
     if damage_type == "physical":
@@ -17,6 +21,9 @@ def calculate_damage(
 
     elif damage_type == "arts":
         return attack * (1 - resistance / 100)
+
+    elif damage_type == "true":
+        return attack
 
     else:
         raise ValueError(f"Unknown damage type: {damage_type}")

@@ -3,6 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 
+from .damage import calculate_damage
 from .database import SessionLocal
 from . import crud, schemas
 
@@ -60,11 +61,10 @@ def calculate(data: schemas.DamageRequest, db: Session = Depends(get_db)):
     op = crud.get_operator(db, data.operator_id)
     boss = crud.get_boss(db, data.boss_id)
 
-    if op.damage_type == "physical":
-        damage = max(op.attack - boss.defense, op.attack * 0.05)
-    elif op.damage_type == "arts":
-        damage = op.attack * (1 - boss.resistance / 100)
-    elif op.damage_type == "true":
-        damage = op.attack
+    damage = calculate_damage(
+    attack=op.attack,
+    damage_type=op.damage_type,
+    defense=boss.defense,
+    resistance=boss.resistance)
 
     return {"damage": round(damage, 2), "damage_type": op.damage_type}
