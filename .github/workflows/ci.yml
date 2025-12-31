@@ -5,6 +5,12 @@ on:
     branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
 jobs:
   CI:
     runs-on: ubuntu-latest
