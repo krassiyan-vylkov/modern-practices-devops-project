@@ -43,11 +43,13 @@ def test_arts_damage_zero_resistance():
     assert dmg == 800
 
 
-def test_invalid_damage_type():
-    with pytest.raises(ValueError):
-        calculate_damage(
-            attack=100,
-            damage_type="true",
-            defense=0,
-            resistance=0
-        )
+def test_true_damage():
+    dmg = calculate_damage(
+        attack=1000,
+        damage_type="true",
+        defense = 100,
+        resistance = 20
+    )
+    assert dmg == 1000
+
+
