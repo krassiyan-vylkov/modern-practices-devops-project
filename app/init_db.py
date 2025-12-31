@@ -1,4 +1,4 @@
-from .database import engine, SessionLocal
+from app.database import engine, SessionLocal
 from .models import Base, Operator, Boss
 
 Base.metadata.create_all(bind=engine)

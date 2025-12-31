@@ -1,8 +1,5 @@
 def calculate_damage(
-    attack: int,
-    damage_type: str,
-    defense: int,
-    resistance: int
+    attack: int, damage_type: str, defense: int, resistance: int
 ) -> float:
     """
     Calculates damage based on Arknights rules.

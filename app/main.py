@@ -20,6 +20,11 @@ def get_db():
         db.close()
 
 
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+
 @app.get("/")
 def index(request: Request, db: Session = Depends(get_db)):
     operators = db.query(crud.models.Operator).all()
@@ -30,6 +35,26 @@ def index(request: Request, db: Session = Depends(get_db)):
     )
 
 
+@app.get("/operators")
+def get_operators(db: Session = Depends(get_db)):
+    return db.query(crud.models.Operator).all()
+
+
+@app.post("/operators")
+def create_operator(op: schemas.OperatorCreate, db: Session = Depends(get_db)):
+    return crud.create_operator(db, op)
+
+
+@app.get("/bosses")
+def get_bosses(db: Session = Depends(get_db)):
+    return db.query(crud.models.Boss).all()
+
+
+@app.post("/bosses")
+def create_boss(boss: schemas.BossCreate, db: Session = Depends(get_db)):
+    return crud.create_boss(db, boss)
+
+
 @app.post("/calculate", response_model=schemas.DamageResponse)
 def calculate(data: schemas.DamageRequest, db: Session = Depends(get_db)):
     op = crud.get_operator(db, data.operator_id)
@@ -37,10 +62,9 @@ def calculate(data: schemas.DamageRequest, db: Session = Depends(get_db)):
 
     if op.damage_type == "physical":
         damage = max(op.attack - boss.defense, op.attack * 0.05)
-    else:
+    elif op.damage_type == "arts":
         damage = op.attack * (1 - boss.resistance / 100)
+    elif op.damage_type == "true":
+        damage = op.attack
 
-    return {
-        "damage": round(damage, 2),
-        "damage_type": op.damage_type
-    }
+    return {"damage": round(damage, 2), "damage_type": op.damage_type}
