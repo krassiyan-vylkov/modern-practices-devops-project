@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main", "develop" ] 
+    branches: [ "main", "develop" ]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,7 +27,9 @@ jobs:
         black --check app/
         
     - name: Lint with flake8
-      uses: py-actions/flake8@v2
+      uses: py-actions/flake8@v
+      with:
+        max-line-length: "100"
 
     - name: Run tests
       run: |
