@@ -1,4 +1,3 @@
-import pytest
 from app.damage import calculate_damage
 
 
@@ -51,5 +50,3 @@ def test_true_damage():
         resistance = 20
     )
     assert dmg == 1000
-
-
