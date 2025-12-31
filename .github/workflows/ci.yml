@@ -27,7 +27,7 @@ jobs:
         black --check app/
         
     - name: Lint with flake8
-      uses: py-actions/flake8@v
+      uses: py-actions/flake8@v2
       with:
         max-line-length: "100"
 
