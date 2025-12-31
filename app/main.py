@@ -62,9 +62,10 @@ def calculate(data: schemas.DamageRequest, db: Session = Depends(get_db)):
     boss = crud.get_boss(db, data.boss_id)
 
     damage = calculate_damage(
-    attack=op.attack,
-    damage_type=op.damage_type,
-    defense=boss.defense,
-    resistance=boss.resistance)
+        attack=op.attack,
+        damage_type=op.damage_type,
+        defense=boss.defense,
+        resistance=boss.resistance,
+    )
 
     return {"damage": round(damage, 2), "damage_type": op.damage_type}
