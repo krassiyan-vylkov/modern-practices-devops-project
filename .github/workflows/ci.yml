@@ -77,3 +77,6 @@ jobs:
     - name: Push Docker image
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/arknights-app:latest
 
+    - name: Initialize SQLite DB
+      run: docker run --rm ${{ secrets.DOCKERHUB_USERNAME }}/arknights-app:latest python app/init_db.py
+
