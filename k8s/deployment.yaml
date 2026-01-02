@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arknights-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arknights
+  template:
+    metadata:
+      labels:
+        app: arknights
+    spec:
+      containers:
+        - name: arknights
+          image: krassso/arknights-app:latest
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - name: sqlite-storage
+              mountPath: ./
+      volumes:
+        - name: sqlite-storage
+          persistentVolumeClaim:
+            claimName: sqlite-pvc
