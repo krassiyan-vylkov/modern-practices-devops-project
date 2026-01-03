@@ -3,8 +3,6 @@ name: CI Pipeline
 on:
   push:
     branches: [ "main", "develop" ]
-  pull_request:
-    branches: [ "main", "develop" ]
 
 permissions:
   contents: read
@@ -48,6 +46,7 @@ jobs:
       uses: PyCQA/bandit-action@v1
 
   sonarqube:
+    needs: CI
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
@@ -60,7 +59,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
   docker:
-    needs: CI
+    needs: sonarqube
     runs-on: ubuntu-latest
 
     steps:
