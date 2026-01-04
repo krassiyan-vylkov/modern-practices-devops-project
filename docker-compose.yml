@@ -1,0 +1,12 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: arknights-app
+    container_name: arknights-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./database.db:/database.db
+    restart: unless-stopped

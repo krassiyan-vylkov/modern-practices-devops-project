@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arknights-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arknights
+  template:
+    metadata:
+      labels:
+        app: arknights
+    spec:
+      containers:
+        - name: arknights
+          image: krassso/arknights-app:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: postgresql+psycopg2://arknights:arknights@postgres:5432/arknights
