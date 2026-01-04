@@ -1,20 +1,57 @@
 apiVersion: v1
-data:
-  V1__create_tables.sql: ""
-  V2__seed_initial_data.sql: "INSERT INTO operators (name, attack, damage_type) VALUES\r\n('Exusiai',
-    650, 'physical'),\r\n('SilverAsh', 900, 'physical'),\r\n('Eyjafjalla', 800, 'arts'),\r\n('Surtr',
-    2000, 'arts'),\r\n('Mlynar', 1800, 'physical'),\r\n('Mons3r', 1200, 'true'),\r\n('Saga',
-    1000, 'physical'),\r\n('Bubble', 300, 'physical');\r\n\r\nINSERT INTO bosses (name,
-    defense, resistance) VALUES\r\n('Patriot', 1200, 50),\r\n('FrostNova', 600, 70),\r\n('Crownslayer',
-    400, 20),\r\n('Last Steam Knight', 2000, 10),\r\n('Minimalist', 200, 40),\r\n('Pompeii',
-    200, 80),\r\n('Mechanist', 1400, 50);\r\n"
-  V3__add_more_data.sql: "INSERT INTO operators (name, attack, damage_type) VALUES\r\n('Texas',
-    750, 'physical'),\r\n('Bagpipe', 1100, 'physical'),\r\n('Ifrit', 950, 'arts'),\r\n('Ceobe',
-    870, 'arts'),\r\n('Kal''tsit', 1300, 'true');\r\n\r\nINSERT INTO bosses (name,
-    defense, resistance) VALUES\r\n('Talulah', 1800, 60),\r\n('Mephisto', 300, 90),\r\n('Skullshatterer',
-    700, 25);"
-  V4__add_more_operators.sql: "INSERT INTO operators (name, attack, damage_type) VALUES\r\n('Lappland',
-    720, 'physical'),\r\n('Ifrit', 950, 'arts'),\r\n('Blaze', 1100, 'physical');\r\n"
 kind: ConfigMap
 metadata:
   name: flyway-migrations
+data:
+  V1__create_tables.sql: |
+    CREATE TABLE IF NOT EXISTS public.operators (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        attack INTEGER NOT NULL,
+        damage_type TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS public.bosses (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        defense INTEGER NOT NULL,
+        resistance INTEGER NOT NULL
+    );
+
+  V2__seed_initial_data.sql: |
+    INSERT INTO public.operators (name, attack, damage_type) VALUES
+    ('Exusiai', 650, 'physical'),
+    ('SilverAsh', 900, 'physical'),
+    ('Eyjafjalla', 800, 'arts'),
+    ('Surtr', 2000, 'arts'),
+    ('Mlynar', 1800, 'physical'),
+    ('Mons3r', 1200, 'true'),
+    ('Saga', 1000, 'physical'),
+    ('Bubble', 300, 'physical');
+
+    INSERT INTO public.bosses (name, defense, resistance) VALUES
+    ('Patriot', 1200, 50),
+    ('FrostNova', 600, 70),
+    ('Crownslayer', 400, 20),
+    ('Last Steam Knight', 2000, 10),
+    ('Minimalist', 200, 40),
+    ('Pompeii', 200, 80),
+    ('Mechanist', 1400, 50);
+
+  V3__add_more_data.sql: |
+    INSERT INTO public.operators (name, attack, damage_type) VALUES
+    ('Texas', 750, 'physical'),
+    ('Bagpipe', 1100, 'physical'),
+    ('Ifrit', 950, 'arts'),
+    ('Ceobe', 870, 'arts'),
+    ('Kal''tsit', 1300, 'true');
+
+    INSERT INTO public.bosses (name, defense, resistance) VALUES
+    ('Talulah', 1800, 60),
+    ('Mephisto', 300, 90),
+    ('Skullshatterer', 700, 25);
+
+  V4__add_more_operators.sql: |
+    INSERT INTO public.operators (name, attack, damage_type) VALUES
+    ('Lappland', 720, 'physical'),
+    ('Blaze', 1100, 'physical');

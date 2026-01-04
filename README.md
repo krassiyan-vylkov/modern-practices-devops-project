@@ -142,6 +142,7 @@ Then open in a browser:
 http://<MINIKUBE_IP>:<NODEPORT>
 ```
 
+Another option:
 ```bash
 minikube service arknights-service --url
 ```
