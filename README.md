@@ -124,7 +124,6 @@ kubectl apply -f k8s/app/
 This deploys:
 - PostgreSQL (Deployment + Service + PVC)
 - Application Deployment (multiple replicas)
-- Database seeding Job
 - NodePort Service for external access
 
 ### Step 3: Verify Deployment
