@@ -1,12 +1,42 @@
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: arknights-app
-    container_name: arknights-api
+  postgres:
+    image: postgres:15
+    container_name: arknights-postgres
+    environment:
+      POSTGRES_DB: arknights
+      POSTGRES_USER: arknights
+      POSTGRES_PASSWORD: arknights
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:10
+    container_name: arknights-flyway
+    depends_on:
+      - postgres
+    command: >
+      -url=jdbc:postgresql://postgres:5432/arknights
+      -user=arknights
+      -password=arknights
+      -baselineOnMigrate=true
+      migrate
+    volumes:
+      - ./db/migrations:/flyway/sql
+    restart: "no"
+
+  app:
+    build: .
+    container_name: arknights-app
+    depends_on:
+      - postgres
+      - flyway
+    environment:
+      DATABASE_URL: postgresql+psycopg2://arknights:arknights@postgres:5432/arknights
     ports:
       - "8000:8000"
-    volumes:
-      - ./database.db:/database.db
-    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+volumes:
+  postgres_data:
