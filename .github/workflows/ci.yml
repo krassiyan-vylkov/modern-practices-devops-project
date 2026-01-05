@@ -87,6 +87,16 @@ jobs:
         vuln-type: 'os,library'
         severity: CRITICAL,HIGH
 
+    - name: Run container for smoke test
+      run: |
+        docker run -d -p 8000:8000 --name arknights-test \
+          ${{ secrets.DOCKERHUB_USERNAME }}/arknights-app:latest
+
+        echo "Waiting for API..."
+        sleep 15
+
+        curl --fail http://localhost:8000/health
+
     - name: Push Docker image
       run: |
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/arknights-app:latest

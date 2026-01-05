@@ -20,3 +20,7 @@ tests/
 
 # Logs
 *.log
+
+# DB and K8s
+db/
+k8s/
